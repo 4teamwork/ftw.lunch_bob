@@ -18,6 +18,6 @@ Add Credentials:
 
 ```bash
 touch .env
-echo "POST_BOY_SLACK_TOKEN='[your slack token]'" >> .env
-echo "POST_BOY_CHANNEL='[your slack channel id]'" >> .env
+echo "LUNCH_BOB_TOKEN='[your slack token]'" >> .env
+echo "LUNCH_CHANNEL='[your slack channel id]'" >> .env
 ```

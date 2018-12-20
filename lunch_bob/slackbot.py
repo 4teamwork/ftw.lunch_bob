@@ -5,28 +5,33 @@ import os
 BASE_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 load_dotenv(os.path.join(BASE_PATH, '.env'))
 
-slack_token = os.getenv('POST_BOY_SLACK_TOKEN')
-slack_channel = os.getenv('POST_BOY_CHANNEL')
+slack_token = os.getenv('LUNCH_BOB_TOKEN')
+slack_channel = os.getenv('LUNCH_CHANNEL')
 
 
-def send_message(pretext, text, color=None, img_url=None):
-    slack_client = SlackClient(slack_token)
-    if(slack_client.rtm_connect(with_team_state=False)):
-        print("Starter Bot connected and running!")
-        starterbot_id = slack_client.api_call("auth.test")["user_id"]
-        slack_client.api_call(
-            "chat.postMessage",
+slack_client = SlackClient(slack_token)
+
+
+def send_message(message):
+    response = slack_client.api_call(
+        'chat.postMessage',
+        channel=slack_channel,
+        text=message
+    )
+
+    return response
+
+
+def send_reactions(timestamp, reactions):
+    if not iter(reactions):
+        reactions = [reactions]
+    responses = []
+    for reaction in reactions:
+        responses.append(slack_client.api_call(
+            'reactions.add',
             channel=slack_channel,
-            as_user=True,
-            user=starterbot_id,
-            attachments=[
-                {
-                    "pretext": pretext,
-                    "text": text,
-                    "color": color,
-                    "image_url": img_url,
-                }
-            ],
-        )
-    else:
-        print("Connection failed.")
+            name=reaction,
+            timestamp=timestamp
+        ))
+    return responses
+
