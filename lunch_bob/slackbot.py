@@ -8,7 +8,6 @@ load_dotenv(os.path.join(BASE_PATH, '.env'))
 slack_token = os.getenv('LUNCH_BOB_TOKEN')
 slack_channel = os.getenv('LUNCH_CHANNEL')
 
-
 slack_client = SlackClient(slack_token)
 
 
